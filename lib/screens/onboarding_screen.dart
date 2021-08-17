@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:poopingapp/utilities/styles.dart';
+import 'package:poopingapp/screens/getStarted.dart';
 
 class OnboardingScreen extends StatefulWidget {
   @override
@@ -68,24 +69,30 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Image(
-                        image: AssetImage('assets/images/logo.png'),
-                        width: 40.0,
-                        fit: BoxFit.contain
-                      ),
-                      _currentPage != _numPages - 1 ? Container(
-                        // alignment: Alignment.centerRight,
-                        height: 40.0,
-                        child: TextButton(
-                          onPressed: () => print('Skip'),
-                          child: Text(
-                            'Skip',
-                            style: TextStyle(
-                              color: Color(0xFFBC6F2B),
-                              fontSize: 15.0,
-                            ),
-                          ),
-                        ),
-                      ) : SizedBox(height: 40.0),
+                          image: AssetImage('assets/images/logo.png'),
+                          width: 40.0,
+                          fit: BoxFit.contain),
+                      _currentPage != _numPages - 1
+                          ? Container(
+                              // alignment: Alignment.centerRight,
+                              height: 40.0,
+                              child: TextButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _currentPage = _numPages - 1;
+                                  });
+                                  print('Skip');
+                                  },
+                                child: Text(
+                                  'Skip',
+                                  style: TextStyle(
+                                    color: Color(0xFFBC6F2B),
+                                    fontSize: 15.0,
+                                  ),
+                                ),
+                              ),
+                            )
+                          : SizedBox(height: 40.0),
                     ],
                   ),
                 ),
@@ -227,12 +234,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         ),
       ),
       bottomSheet: _currentPage == _numPages - 1
-          ? Container(
-              height: 50.0,
-              width: double.infinity,
-              color: Color(0xFFBC6F2B),
-              child: GestureDetector(
-                onTap: () => print('Get started'),
+          ? GestureDetector(
+              onTap: () => {
+                print('Get started'),
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return GetStartedScreen();
+                }))
+              },
+              child: Container(
+                height: 50.0,
+                width: double.infinity,
+                color: Color(0xFFBC6F2B),
                 child: Center(
                   child: Padding(
                     padding: EdgeInsets.only(bottom: 10.0, top: 10.0),
