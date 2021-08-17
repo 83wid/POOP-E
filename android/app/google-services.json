@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "68194994727",
+    "project_id": "pooping-bdb0e",
+    "storage_bucket": "pooping-bdb0e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:68194994727:android:1191db8da9d2cc8ab6dc02",
+        "android_client_info": {
+          "package_name": "com.bewid.poopingapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "68194994727-95sn43mpui2gescr6oe72ulacocjncq9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bewid.poopingapp",
+            "certificate_hash": "52c4bda0bb9fd3bab2a5672048a50e9b95d87463"
+          }
+        },
+        {
+          "client_id": "68194994727-ndphgb15sosk3h2ie9ri2om69725n409.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqoQMGfl1fq6ieb_CtRSLKqNqwrZEDT34"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "68194994727-ndphgb15sosk3h2ie9ri2om69725n409.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
