@@ -34,7 +34,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                           children: <TextSpan>[
                             TextSpan(
                               text: 'GET',
-                              style: TextStyle(color: Colors.black),
+                              style: TextStyle(color: Theme.of(context).textSelectionTheme.selectionColor),
                             ),
                             TextSpan(
                               text: ' STARTED',
@@ -52,7 +52,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                             TextSpan(
                               text:
                                   'Track and analyse your bowel movements easily.',
-                              style: TextStyle(color: Colors.black),
+                              style: TextStyle(color: Theme.of(context).textSelectionTheme.selectionColor),
                             ),
                           ],
                         ),
