@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:poopingapp/Controllers/userController.dart';
 import 'package:poopingapp/screens/HomeScreen.dart';
 
 class GoogleSignInButton extends StatefulWidget {
@@ -35,7 +36,6 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
                   _isSigningIn = true;
                 });
 
-                // TODO: Add method call to the Google Sign-In authentication
                 signInWithGoogle(context);
                 setState(() {
                   _isSigningIn = false;
@@ -96,12 +96,12 @@ void signInWithGoogle(BuildContext context) async {
     UserCredential userCredential =
         await _firebaseAuth.signInWithCredential(credential);
     firebaseUser = userCredential.user;
+    UserController.addUser();
     if (firebaseUser != null) {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return MyHomePage(title: 'title');
       }));
     }
-    ;
   }
 }
 
