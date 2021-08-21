@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:poopingapp/Controllers/userController.dart';
+import 'package:poopingapp/screens/Setup_screens/setWaterScreen.dart';
 import 'package:poopingapp/screens/onboarding_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -48,7 +50,6 @@ class _AppState extends State<App> {
     initializeFlutterFire();
     super.initState();
     getCurrentAppTheme();
-
   }
 
   // ///////////////////////////////////////////////
@@ -70,17 +71,76 @@ class _AppState extends State<App> {
     }
     final email = FirebaseAuth.instance.currentUser?.email;
     return Consumer<DarkThemeProvider>(
-      builder: (context, theme, _) => 
-      MaterialApp(
+      builder: (context, theme, _) => MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         // darkTheme: ThemeData.dark(),
         // themeMode: ThemeMode.system,
         theme: Styles.themeData(themeChangeProvider.darkTheme, context),
         home: email != null
-            ? MyHomePage(title: 'home')
+            ? toshow()
             : OnboardingScreen(), //MyHomePage(title: 'Flutter Demo Home Page'),
       ),
     );
   }
+}
+
+// Future getProp() async {
+//   bool res = await UserController.getProp('completed');
+//   return res;
+// }
+
+// final completed = getProp();
+Widget toshow1() {
+  return FutureBuilder(
+    builder: (context, snapshot) {
+      print("ddd" + snapshot.data.toString());
+      if (snapshot.connectionState == ConnectionState.none) {
+        //print('project snapshot data is: ${snapshot.data}');
+        return Container();
+      }
+      if (snapshot.connectionState == ConnectionState.done) {
+        if (snapshot.data == true) return MyHomePage(title: 'title');
+        if (snapshot.data == false) {
+          return SetWaterScreen();
+        }
+        if (snapshot.hasData == false) {
+          // UserController.addUser();
+          return SetWaterScreen();
+        }
+      }
+      return Center(child: CircularProgressIndicator());
+    },
+    future: users.doc(FirebaseAuth.instance.currentUser?.uid).get(),
+  );
+}
+
+// final completed = getProp();
+Widget toshow() {
+  return FutureBuilder(
+    future: users.doc(currentUserid).get(),
+    builder: (BuildContext context, AsyncSnapshot snapshot) {
+      if (snapshot.hasError) {
+        return Text("Something went wrong");
+      }
+
+      if (snapshot.hasData && !snapshot.data!.exists) {
+        return Text("Document does not exist");
+      }
+
+      if (snapshot.connectionState == ConnectionState.done) {
+        Map<String, dynamic> data =
+            snapshot.data!.data() as Map<String, dynamic>;
+        if (data['completed'] == 'true') return MyHomePage(title: 'title');
+        if (data['completed'] == 'false') {
+          return SetWaterScreen();
+        }
+        if (snapshot.hasData == false) {
+          UserController.addUser();
+          return SetWaterScreen();
+        }
+      }
+      return Center(child: CircularProgressIndicator());
+    },
+  );
 }
