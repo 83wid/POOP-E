@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:poopingapp/Controllers/userController.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:poopingapp/screens/homeScreen.dart';
+import 'package:poopingapp/screens/Setup_screens/setMedReminder.dart';
 
 class SetMedsScreen extends StatefulWidget {
   SetMedsScreen({Key? key}) : super(key: key);
@@ -173,9 +173,9 @@ class _SetMedsScreenState extends State<SetMedsScreen> {
                       'medicineTakes': medTakesController.text,
                     }),
                     UserController.createProp('completed', 'true'),
-                    Navigator.pushReplacement(context,
+                    Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return MyHomePage(title: 'tet');
+                      return SetMedReminderScreen(takes: int.parse(medTakesController.text),);
                     })),
                     print('water stored'),
                   },
