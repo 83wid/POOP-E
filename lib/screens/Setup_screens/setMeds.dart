@@ -3,6 +3,13 @@ import 'package:poopingapp/Controllers/userController.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:poopingapp/screens/Setup_screens/setMedReminder.dart';
 
+bool _isNumeric(String? str) {
+  if (str == null || str.indexOf('.') != -1) {
+    return false;
+  }
+  return double.tryParse(str) != null;
+}
+
 class SetMedsScreen extends StatefulWidget {
   SetMedsScreen({Key? key}) : super(key: key);
 
@@ -148,6 +155,11 @@ class _SetMedsScreenState extends State<SetMedsScreen> {
                         keyboardType: TextInputType.number,
                         textAlign: TextAlign.center,
                         validator: (_value) {
+                          if (_isNumeric(_value) == false) {
+                            return 'This isn\'t a number';
+                          }
+                          else if (_value != null && int.parse(_value) > 7)
+                            return 'Too much for one Day';
                           return '';
                         },
                         decoration: InputDecoration(
@@ -172,10 +184,12 @@ class _SetMedsScreenState extends State<SetMedsScreen> {
                       'medicineAmount': medAmountController.text,
                       'medicineTakes': medTakesController.text,
                     }),
-                    UserController.createProp('completed', 'true'),
+                    // UserController.createProp('completed', 'true'),
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return SetMedReminderScreen(takes: int.parse(medTakesController.text),);
+                      return SetMedReminderScreen(
+                        takes: int.parse(medTakesController.text),
+                      );
                     })),
                     print('water stored'),
                   },
