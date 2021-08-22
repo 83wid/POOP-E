@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:poopingapp/screens/Setup_screens/setMedReminder.dart';
 import 'package:poopingapp/screens/getStarted.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -47,6 +48,10 @@ class _MyHomePageState extends State<MyHomePage> {
               TextButton(
                 child: Text('Sign Out'),
                 onPressed: () => signOut(context: context),
+              ),
+              TextButton(
+                child: Text('Sign '),
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) { return SetMedReminderScreen(takes: 2,);})),
               ),
             ],
           ),
