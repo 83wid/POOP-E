@@ -35,6 +35,8 @@ dependencies:
   # For example, to use Firebase Authentication and Cloud Firestore
   firebase_auth: ^3.0.1
   cloud_firestore: ^2.4.0
+  
+  #Flutter plugin for Firebase Cloud Messaging, deliver messages on Android and iOS.
 
   # Add Google Sign_in feature
   google_sign_in: ^5.0.7
@@ -46,6 +48,8 @@ dependencies:
   shared_preferences: ^2.0.6
 
   provider: ^5.0.0
+
+  flutter_local_notifications: ^8.1.1+1
 
 dev_dependencies:
   flutter_test:
