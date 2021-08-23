@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:poopingapp/Controllers/userController.dart';
 import 'package:poopingapp/screens/Setup_screens/setWaterScreen.dart';
@@ -24,7 +25,6 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   // This widget is the root of your application.
-  ////////////////////////////////////////////////////
   DarkThemeProvider themeChangeProvider = new DarkThemeProvider();
   bool _initialized = false;
   bool _error = false;
@@ -52,7 +52,6 @@ class _AppState extends State<App> {
     getCurrentAppTheme();
   }
 
-  // ///////////////////////////////////////////////
   void getCurrentAppTheme() async {
     themeChangeProvider.darkTheme =
         await themeChangeProvider.providerPreferences.getTheme();
@@ -74,69 +73,30 @@ class _AppState extends State<App> {
       builder: (context, theme, _) => MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
-        // darkTheme: ThemeData.dark(),
-        // themeMode: ThemeMode.system,
         theme: Styles.themeData(themeChangeProvider.darkTheme, context),
-        home: email != null
-            ? toshow()
-            : OnboardingScreen(), //MyHomePage(title: 'Flutter Demo Home Page'),
+        home: email != null ? toshow() : OnboardingScreen(),
       ),
     );
   }
 }
 
-// Future getProp() async {
-//   bool res = await UserController.getProp('completed');
-//   return res;
-// }
-
-// final completed = getProp();
-Widget toshow1() {
-  return FutureBuilder(
-    builder: (context, snapshot) {
-      print("ddd" + snapshot.data.toString());
-      if (snapshot.connectionState == ConnectionState.none) {
-        //print('project snapshot data is: ${snapshot.data}');
-        return Container();
-      }
-      if (snapshot.connectionState == ConnectionState.done) {
-        if (snapshot.data == true) return MyHomePage(title: 'title');
-        if (snapshot.data == false) {
-          return SetWaterScreen();
-        }
-        if (snapshot.hasData == false) {
-          // UserController.addUser();
-          return SetWaterScreen();
-        }
-      }
-      return Center(child: CircularProgressIndicator());
-    },
-    future: users.doc(FirebaseAuth.instance.currentUser?.uid).get(),
-  );
-}
-
-// final completed = getProp();
 Widget toshow() {
+final currentUserid = FirebaseAuth.instance.currentUser?.uid;
+CollectionReference users = FirebaseFirestore.instance.collection('users');
   return FutureBuilder(
     future: users.doc(currentUserid).get(),
     builder: (BuildContext context, AsyncSnapshot snapshot) {
       if (snapshot.hasError) {
         return Text("Something went wrong");
       }
-
       if (snapshot.hasData && !snapshot.data!.exists) {
-        return Text("Document does not exist");
+        UserController.addUser();
+        return SetWaterScreen();
       }
-
       if (snapshot.connectionState == ConnectionState.done) {
-        Map<String, dynamic> data =
-            snapshot.data!.data() as Map<String, dynamic>;
-        if (data['completed'] == 'true') return MyHomePage(title: 'title');
-        if (data['completed'] == 'false') {
-          return SetWaterScreen();
-        }
-        if (snapshot.hasData == false) {
-          UserController.addUser();
+        if (snapshot.data['completed'] == 'true')
+          return MyHomePage(title: snapshot.data['medicine']['medicineTakes']);
+        if (snapshot.data['completed'] == 'false') {
           return SetWaterScreen();
         }
       }

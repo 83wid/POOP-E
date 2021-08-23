@@ -51,7 +51,12 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               TextButton(
                 child: Text('Sign '),
-                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) { return SetMedReminderScreen(takes: 2,);})),
+                onPressed: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) {
+                  return SetMedReminderScreen(
+                    takes: int.parse(widget.title),
+                  );
+                })),
               ),
             ],
           ),

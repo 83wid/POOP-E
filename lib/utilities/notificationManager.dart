@@ -37,7 +37,7 @@ class NotificationManager {
   getPlatformChannelSpecfics() {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
         'your channel id', 'your channel name', 'your channel description',
-        importance: Importance.high,
+        importance: Importance.max,
         priority: Priority.high,
         ticker: 'Medicine Reminder');
     var iOSPlatformChannelSpecifics = IOSNotificationDetails();

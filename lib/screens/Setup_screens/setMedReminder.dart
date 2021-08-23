@@ -4,7 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:poopingapp/screens/homeScreen.dart';
 import 'package:poopingapp/utilities/notificationManager.dart';
 
-Map<int, String> entries = new Map<int, String>();
+late Map<String, dynamic> entries = new Map();
+
 final manager = NotificationManager();
 
 class SetMedReminderScreen extends StatefulWidget {
@@ -18,9 +19,10 @@ class SetMedReminderScreen extends StatefulWidget {
 
 class _SetMedReminderScreenState extends State<SetMedReminderScreen> {
   int index = 0;
+  String numTakes = '';
 
   // late List<TextEditingController> takeControllers;
-  TimeOfDay _time = TimeOfDay(hour: 7, minute: 15);
+  TimeOfDay _time = TimeOfDay(hour: 7, minute: 00);
   Future<TimeOfDay?> _selectTime() async {
     return await showTimePicker(
       context: context,
@@ -28,10 +30,30 @@ class _SetMedReminderScreenState extends State<SetMedReminderScreen> {
     );
   }
 
+  void initentries() async {
+    // final userdata = await UserController.getAllProp();
+    final takesNum = await UserController.getProp('medicineTakeNum');
+    int i = -1;
+    if (takesNum != null) {
+      while (++i < int.parse(takesNum)) {
+        dynamic item =
+            await UserController.getProp('medicineTakes', takeId: i.toString());
+        print(item);
+        setState(() {
+          if (item != null) entries[i.toString()] = item;
+          numTakes = takesNum;
+        });
+      }
+    }
+  }
+
   @override
+  void initState() {
+    initentries();
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
-    // takeControllers =
-    //     List.generate(widget.takes, (index) => TextEditingController());
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Center(
@@ -89,32 +111,40 @@ class _SetMedReminderScreenState extends State<SetMedReminderScreen> {
                     // }),
                     if (entries.isNotEmpty)
                       {
-                        entries.forEach((key, value) async {
-                          final val = value.split(':');
-                          final _name =
-                              await UserController.getProp('medicineName');
-                          final _dose =
-                              await UserController.getProp('medicineAmount');
-                          final _type = await UserController.getProp('medicineType');
-                          if (_name != null && _dose != null && _type != null) {
-                            manager.showNotificationDaily(
-                                1,
-                                'Take to Take' + _name,
-                                'Your Dose is: ' + _dose + ' ' + _type,
-                                int.parse(val[0]),
-                                int.parse(val[1]));
-                            await UserController.createProp(
-                                'medicineTakes.$key', {
-                              key.toString(): value,
-                            });
-                          }
-                          // print(key.toString() + ': ' + value);
-                        }),
-                        UserController.createProp('completed', 'true'),
-                        Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (context) {
-                          return MyHomePage(title: 'tet');
-                        })),
+                        UserController.createProp('medicineTakes', entries)
+                            .then((value) => {
+                                  entries.forEach((key, value) async {
+                                    final val = value.split(':');
+                                    final _name = await UserController.getProp(
+                                        'medicineName');
+                                    final _dose = await UserController.getProp(
+                                        'medicineAmount');
+                                    final _type = await UserController.getProp(
+                                        'medicineType');
+                                    if (_name != null &&
+                                        _dose != null &&
+                                        _type != null) {
+                                      print(_name + ' ' + _type + ' ' + _dose);
+                                      manager.showNotificationDaily(
+                                          int.parse(key),
+                                          'Meds to Take' + _name,
+                                          'Your Dose is: ' +
+                                              _dose +
+                                              ' ' +
+                                              _type +
+                                              ' of The Day',
+                                          int.parse(val[0]),
+                                          int.parse(val[1]));
+                                    }
+                                    // print(key.toString() + ': ' + value);
+                                  }),
+                                  UserController.createProp(
+                                      'completed', 'true'),
+                                  Navigator.pushReplacement(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return MyHomePage(title: numTakes);
+                                  })),
+                                }),
                       }
                     // print('water stored'),
                   },
@@ -190,7 +220,7 @@ class _MedTakeState extends State<MedTake> {
         children: [
           Container(
               // width: MediaQuery.of(context).size.width / 2.2,
-              child: takeText(entries[widget.index], widget.index)
+              child: takeText(entries[widget.index.toString()], widget.index)
               // style: hintStyle,
               ),
           Container(
@@ -201,7 +231,7 @@ class _MedTakeState extends State<MedTake> {
                 setState(() {
                   if (time != null) {
                     value = time.toString();
-                    entries[widget.index] =
+                    entries[widget.index.toString()] =
                         value.substring(10, value.length - 1);
                   }
                 })

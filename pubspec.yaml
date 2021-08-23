@@ -29,12 +29,12 @@ dependencies:
   
   flutter_svg: ^0.22.0
 
-  firebase_core: ^1.4.0
+  firebase_core: ^1.5.0
 
   # Add the dependencies for the Firebase products you want to use in your app
   # For example, to use Firebase Authentication and Cloud Firestore
-  firebase_auth: ^3.0.1
-  cloud_firestore: ^2.4.0
+  firebase_auth: ^3.0.2
+  cloud_firestore: ^2.5.0
   
   #Flutter plugin for Firebase Cloud Messaging, deliver messages on Android and iOS.
 
