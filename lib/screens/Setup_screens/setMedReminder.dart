@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:poopingapp/Controllers/userController.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:poopingapp/screens/homeScreen.dart';
+import 'package:poopingapp/utilities/notificationManager.dart';
 
 Map<int, String> entries = new Map<int, String>();
+final manager = NotificationManager();
 
 class SetMedReminderScreen extends StatefulWidget {
   SetMedReminderScreen({Key? key, required this.takes}) : super(key: key);
@@ -88,13 +90,27 @@ class _SetMedReminderScreenState extends State<SetMedReminderScreen> {
                     if (entries.isNotEmpty)
                       {
                         entries.forEach((key, value) async {
-                          await UserController.createProp(
-                              'medicineTakes.$key', {
-                            key.toString(): value,
-                          });
+                          final val = value.split(':');
+                          final _name =
+                              await UserController.getProp('medicineName');
+                          final _dose =
+                              await UserController.getProp('medicineAmount');
+                          final _type = await UserController.getProp('medicineType');
+                          if (_name != null && _dose != null && _type != null) {
+                            manager.showNotificationDaily(
+                                1,
+                                'Take to Take' + _name,
+                                'Your Dose is: ' + _dose + ' ' + _type,
+                                int.parse(val[0]),
+                                int.parse(val[1]));
+                            await UserController.createProp(
+                                'medicineTakes.$key', {
+                              key.toString(): value,
+                            });
+                          }
                           // print(key.toString() + ': ' + value);
                         }),
-                    UserController.createProp('completed', 'true'),
+                        UserController.createProp('completed', 'true'),
                         Navigator.pushReplacement(context,
                             MaterialPageRoute(builder: (context) {
                           return MyHomePage(title: 'tet');
@@ -174,9 +190,9 @@ class _MedTakeState extends State<MedTake> {
         children: [
           Container(
               // width: MediaQuery.of(context).size.width / 2.2,
-              child:takeText(entries[widget.index], widget.index)
-            // style: hintStyle,
-          ),
+              child: takeText(entries[widget.index], widget.index)
+              // style: hintStyle,
+              ),
           Container(
             width: MediaQuery.of(context).size.width / 2.2,
             child: ElevatedButton(
@@ -199,7 +215,7 @@ class _MedTakeState extends State<MedTake> {
   }
 }
 
-Widget takeText (String? name, index){
+Widget takeText(String? name, index) {
   String value = '';
   final takes = [
     'Fisrt',
@@ -214,6 +230,5 @@ Widget takeText (String? name, index){
   if (name != null) {
     value = name;
   }
-  return value != '' ? Text(value) : Text(
-            takes[index] + ' Take');
+  return value != '' ? Text(value) : Text(takes[index] + ' Take');
 }
