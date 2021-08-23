@@ -16,6 +16,7 @@ final kSubtitleStyle = TextStyle(
   fontSize: 14.0,
   height: 1.2,
 );
+
 abstract class Styles {
   //colors
   static const Color whiteColor = Color(0xffffffff);
@@ -86,11 +87,12 @@ abstract class Styles {
       color: Styles.blackColor, fontSize: 16.0, fontWeight: FontWeight.bold);
 
   static ThemeData themeData(bool isDarkTheme, BuildContext context) {
-    isDarkTheme = SchedulerBinding.instance?.window.platformBrightness == Brightness.dark;
+    isDarkTheme =
+        SchedulerBinding.instance?.window.platformBrightness == Brightness.dark;
     return ThemeData(
       //* Custom Google Font
       //  fontFamily: Devfest.google_sans_family,
-      primarySwatch: Colors.red,
+      primarySwatch: Colors.brown,
       primaryColor: isDarkTheme ? Colors.black : Colors.white,
 
       backgroundColor: isDarkTheme ? Colors.black : Color(0xffF1F5FB),
@@ -106,15 +108,22 @@ abstract class Styles {
       focusColor: isDarkTheme ? Color(0xff0B2512) : Color(0xffA8DAB5),
       disabledColor: Colors.grey,
       textSelectionTheme: TextSelectionThemeData(
-            selectionColor: isDarkTheme ? Colors.white : Colors.black,
-            cursorColor: Color(0xffBA379B).withOpacity(.6),
-            selectionHandleColor: Color(0xffBA379B).withOpacity(1),
-          ),
+        selectionColor: isDarkTheme ? Colors.white : Colors.black,
+        cursorColor: Color(0xffBA379B).withOpacity(.6),
+        selectionHandleColor: Color(0xffBA379B).withOpacity(1),
+      ),
       cardColor: isDarkTheme ? Color(0xFF151515) : Colors.white,
       canvasColor: isDarkTheme ? Colors.black : Colors.grey[50],
       brightness: isDarkTheme ? Brightness.dark : Brightness.light,
       buttonTheme: Theme.of(context).buttonTheme.copyWith(
-          colorScheme: isDarkTheme ? ColorScheme.dark() : ColorScheme.light()),
+          colorScheme: isDarkTheme
+              ? ColorScheme.dark(
+                  primary: Color(0xFFBC6F2B),
+                  background: Color(0xFFBC6F2B),
+                )
+              : ColorScheme.light(
+                  primary: Color(0xFFBC6F2B),
+                )),
       appBarTheme: AppBarTheme(
         elevation: 0.0,
       ),
