@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:poopingapp/screens/getStarted.dart';
 import 'package:poopingapp/screens/insertBowl.dart';
+import 'package:poopingapp/utilities/styles.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -49,12 +50,32 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Text('Sign Out'),
                 onPressed: () => signOut(context: context),
               ),
-              TextButton(
-                child: Text('Sign '),
-                onPressed: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) {
-                  return InsertBowl();
-                })),
+              GestureDetector(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.brown
+                    // border: ShapeBorder()
+                  ),
+                  width: MediaQuery.of(context).size.width / 2,
+                  height: MediaQuery.of(context).size.height / 5,
+                  child: TextButton(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Image.asset('assets/images/poop.png',
+                        width: MediaQuery.of(context).size.width/ 5,
+                        fit: BoxFit.contain,
+                        ),
+                        Text('Record Your Bowl movement',
+                        style: Styles.smallTextStyleWhite,),
+                      ],
+                    ),
+                    onPressed: () => Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return InsertBowl();
+                    })),
+                  ),
+                ),
               ),
             ],
           ),
