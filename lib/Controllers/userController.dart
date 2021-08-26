@@ -34,7 +34,7 @@ class User {
   String email;
   Map<String, dynamic> medicine;
   Map<String, dynamic> medicineTakes;
-  Map<String, dynamic> bowlEntries;
+  Map<String,  Map<String, dynamic>> bowlEntries;
   String name;
   String waterAmount;
 
@@ -43,7 +43,7 @@ class User {
 
   factory User.fromJson(dynamic json) {
     return User(
-        json['bowlEntries'] as Map<String, dynamic>,
+        json['bowlEntries'] as Map<String,  Map<String, dynamic>>,
         json['completed'] as String,
         json['email'] as String,
         json['medicine'] as Map<String, dynamic>,
