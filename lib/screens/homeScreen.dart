@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:poopingapp/screens/Setup_screens/setMedReminder.dart';
 import 'package:poopingapp/screens/getStarted.dart';
+import 'package:poopingapp/screens/insertBowl.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -53,9 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Text('Sign '),
                 onPressed: () => Navigator.push(context,
                     MaterialPageRoute(builder: (context) {
-                  return SetMedReminderScreen(
-                    takes: int.parse(widget.title),
-                  );
+                  return InsertBowl();
                 })),
               ),
             ],
