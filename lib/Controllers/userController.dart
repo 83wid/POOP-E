@@ -1,18 +1,49 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+userScheme(name, email) => {
+      'completed': 'false',
+      'email': email,
+      'name': name,
+      'waterAmount': '0',
+      'medicine': {
+        'medicineName': '',
+        'medicineType': '',
+        'medicineTakes': '',
+        'medicineAmount': '',
+      },
+      'medicineTakes': {},
+      'bowlEntries': {
+        'type': '',
+        'color': '',
+        'smell': '',
+        'volume': '',
+        'pain': '',
+        'symptoms': '',
+        'duration': '',
+        'blood': 'false',
+        'floatiness': 'false',
+        'flalulence': 'false',
+        'evacuatingStrain': 'false',
+        'time': '',
+      },
+    };
+
 class User {
   String completed;
   String email;
   Map<String, dynamic> medicine;
   Map<String, dynamic> medicineTakes;
+  Map<String, dynamic> bowlEntries;
   String name;
   String waterAmount;
 
-  User(this.completed, this.email, this.medicine, this.medicineTakes, this.name,
-      this.waterAmount);
+  User(this.bowlEntries, this.completed, this.email, this.medicine,
+      this.medicineTakes, this.name, this.waterAmount);
 
   factory User.fromJson(dynamic json) {
     return User(
+        json['bowlEntries'] as Map<String, dynamic>,
         json['completed'] as String,
         json['email'] as String,
         json['medicine'] as Map<String, dynamic>,
@@ -27,21 +58,15 @@ class UserController {
     final currentUser = FirebaseAuth.instance.currentUser;
     final currentUserid = currentUser?.uid;
     CollectionReference users = FirebaseFirestore.instance.collection('users');
-        FirebaseFirestore.instance.collection('users').doc(currentUserid).get();
-    return users.doc(currentUser?.uid).set({
-      'email': currentUser?.email,
-      'name': currentUser?.displayName,
-      'completed': 'false',
-      'medicine': {},
-      'medicineTakes': {},
-      'waterAmount': '0',
-    });
+    FirebaseFirestore.instance.collection('users').doc(currentUserid).get();
+    dynamic data = userScheme(currentUser?.displayName, currentUser?.email);
+    return users.doc(currentUser?.uid).set(data);
   }
 
   static Future<void> createProp(propName, prop) {
     final currentUserid = FirebaseAuth.instance.currentUser?.uid;
     CollectionReference users = FirebaseFirestore.instance.collection('users');
-        FirebaseFirestore.instance.collection('users').doc(currentUserid).get();
+    FirebaseFirestore.instance.collection('users').doc(currentUserid).get();
     // Call the user's CollectionReference to add a new user
     return users
         .doc(currentUserid)
