@@ -10,7 +10,7 @@ final kTitleStyle = TextStyle(
 );
 
 final kSubtitleStyle = TextStyle(
-  fontFamily: 'Poppins',
+  fontFamily: 'Bebas_Neue',
   color: Colors.white,
   fontWeight: FontWeight.w500,
   fontSize: 14.0,
@@ -45,46 +45,58 @@ abstract class Styles {
   //Strings
   static const TextStyle defaultTextStyle = TextStyle(
     color: Styles.purpleColor,
+    fontFamily: 'Bebas_Neue',
     fontSize: 20.0,
   );
   static const TextStyle defaultTextStyleBlack = TextStyle(
     color: Styles.blackColor,
+    fontFamily: 'Bebas_Neue',
     fontSize: 20.0,
   );
   static const TextStyle defaultTextStyleGRey = TextStyle(
     color: Styles.grayColor,
+    fontFamily: 'Bebas_Neue',
     fontSize: 20.0,
   );
   static const TextStyle smallTextStyleGRey = TextStyle(
     color: Styles.grayColor,
+    fontFamily: 'Bebas_Neue',
     fontSize: 16.0,
   );
   static const TextStyle smallTextStyle = TextStyle(
     color: Styles.purpleColor,
+    fontFamily: 'Bebas_Neue',
     fontSize: 16.0,
   );
   static const TextStyle smallTextStyleWhite = TextStyle(
     color: Styles.whiteColor,
+    fontFamily: 'Bebas_Neue',
     fontSize: 16.0,
   );
   static const TextStyle smallTextStyleBlack = TextStyle(
     color: Styles.blackColor,
+    fontFamily: 'Bebas_Neue',
     fontSize: 16.0,
   );
-  static const TextStyle defaultButtonTextStyle =
-      TextStyle(color: Styles.whiteColor, fontSize: 20);
+  static const TextStyle defaultButtonTextStyle = TextStyle(
+      color: Styles.whiteColor, fontFamily: 'Bebas_Neue', fontSize: 20);
 
   static const TextStyle profileTextStyleBlack = TextStyle(
     color: Styles.blackColor,
+    fontFamily: 'Bebas_Neue',
     fontSize: 20.0,
   );
 
   static const TextStyle defaultTextStyleWhite = TextStyle(
     color: Styles.whiteColor,
+    fontFamily: 'Bebas_Neue',
     fontSize: 20.0,
   );
   static const TextStyle messageRecipientTextStyle = TextStyle(
-      color: Styles.blackColor, fontSize: 16.0, fontWeight: FontWeight.bold);
+    color: Styles.blackColor,
+    fontSize: 16.0,
+    fontFamily: 'Bebas_Neue',
+  );
 
   static ThemeData themeData(bool isDarkTheme, BuildContext context) {
     isDarkTheme =
@@ -98,11 +110,11 @@ abstract class Styles {
       backgroundColor: isDarkTheme ? Colors.black : Color(0xffF1F5FB),
 
       indicatorColor: isDarkTheme ? Color(0xff0E1D36) : Color(0xffCBDCF8),
-      buttonColor: isDarkTheme ? Color(0xFFBC6F2B) : Color(0xFFBC6F2B),
+      buttonColor: isDarkTheme ? Color(0xFF2b1605) : Color(0xFF2b1605),
 
       hintColor: isDarkTheme ? Color(0xff280C0B) : Color(0xffEECED3),
 
-      highlightColor: isDarkTheme ? Color(0xFFBC6F2B) : Color(0xFFBC6F2B),
+      highlightColor: isDarkTheme ? Color(0xFF2b1605) : Color(0xFF2b1605),
       hoverColor: isDarkTheme ? Color(0xff3A3A3B) : Color(0xff4285F4),
 
       focusColor: isDarkTheme ? Color(0xff0B2512) : Color(0xffA8DAB5),
@@ -118,11 +130,11 @@ abstract class Styles {
       buttonTheme: Theme.of(context).buttonTheme.copyWith(
           colorScheme: isDarkTheme
               ? ColorScheme.dark(
-                  primary: Color(0xFFBC6F2B),
-                  background: Color(0xFFBC6F2B),
+                  primary: Color(0xFF2b1605),
+                  background: Color(0xFF2b1605),
                 )
               : ColorScheme.light(
-                  primary: Color(0xFFBC6F2B),
+                  primary: Color(0xFF2b1605),
                 )),
       appBarTheme: AppBarTheme(
         elevation: 0.0,
