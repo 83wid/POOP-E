@@ -40,7 +40,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       height: 8.0,
       width: isActive ? 24.0 : 16.0,
       decoration: BoxDecoration(
-        color: isActive ? Colors.white : Color(0xFFBC6F2B),
+        color: isActive ? Colors.white : Color(0xFF2b1605),
         borderRadius: BorderRadius.all(Radius.circular(12)),
       ),
     );
@@ -86,7 +86,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                 child: Text(
                                   'Skip',
                                   style: TextStyle(
-                                    color: Color(0xFFBC6F2B),
+                                    color: Color(0xFF2b1605),
                                     fontSize: 15.0,
                                   ),
                                 ),
@@ -120,7 +120,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                 children: <TextSpan>[
                                   TextSpan(
                                     text: 'TRACK',
-                                    style: TextStyle(color: Color(0xFFBC6F2B)),
+                                    style: TextStyle(color: Color(0xFF2b1605)),
                                   ),
                                   TextSpan(text: ' POOP'),
                                 ],
@@ -147,7 +147,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                 children: <TextSpan>[
                                   TextSpan(
                                     text: 'bowel movements',
-                                    style: TextStyle(color: Color(0xFFBC6F2B)),
+                                    style: TextStyle(color: Color(0xFF2b1605)),
                                   ),
                                 ],
                               ),
@@ -173,7 +173,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                 children: <TextSpan>[
                                   TextSpan(
                                     text: 'EVERY DAY',
-                                    style: TextStyle(color: Color(0xFFBC6F2B)),
+                                    style: TextStyle(color: Color(0xFF2b1605)),
                                   ),
                                   TextSpan(text: ' FOR PILLS & BOWEL'),
                                 ],
@@ -219,7 +219,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                 SizedBox(width: 10.0),
                                 Icon(
                                   Icons.arrow_forward,
-                                  color: Color(0xFFBC6F2B),
+                                  color: Color(0xFF2b1605),
                                   size: 30.0,
                                 ),
                               ],
@@ -244,7 +244,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               child: Container(
                 height: 50.0,
                 width: double.infinity,
-                color: Color(0xFFBC6F2B),
+                color: Color(0xFF2b1605),
                 child: Center(
                   child: Padding(
                     padding: EdgeInsets.only(bottom: 10.0, top: 10.0),

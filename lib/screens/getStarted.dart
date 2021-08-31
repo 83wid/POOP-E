@@ -41,7 +41,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                             ),
                             TextSpan(
                               text: ' STARTED',
-                              style: TextStyle(color: Color(0xFFBC6F2B)),
+                              style: TextStyle(color: Color(0xFF2b1605)),
                             ),
                           ],
                         ),
