@@ -33,7 +33,7 @@ List<String> items = [
   'duration',
   'blood',
   'floatiness',
-  'flalulence',
+  'flatulence',
   'evacuatingStrain',
   'time'
 ];
@@ -57,7 +57,7 @@ class _InsertBowlState extends State<InsertBowl> {
       ),
       body: Container(
           decoration: BoxDecoration(
-            color: Color(0xFF645450),
+            color: Colors.brown,
           ),
           alignment: Alignment.center,
           child: Center(
@@ -139,9 +139,10 @@ class _InsertBowlState extends State<InsertBowl> {
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: Color(0xFFBC6F2B),
+                      color: Color(0xFF2b1605),
                     ),
-                    height: 50.0,
+                    // height: 50.0,
+                    height: MediaQuery.of(context).size.height / (15),
                     width: double.infinity,
                     child: Center(
                       child: Padding(
@@ -191,11 +192,14 @@ class _InsertBowlState extends State<InsertBowl> {
                         bowlControllers[9].text != '' &&
                         bowlControllers[10].text != '' &&
                         bowlControllers[11].text != '') {
-                      final date = bowlControllers[11]
+                      final day = bowlControllers[11]
                           .text
                           .substring(0, bowlControllers[11].text.indexOf(' '));
+                      final hour = bowlControllers[11].text.substring(
+                          bowlControllers[11].text.indexOf(' ') + 1,
+                          bowlControllers[11].text.indexOf(' ') + 6);
                       await UserController.createProp(
-                          'bowlEntries.$date', data);
+                          'bowlEntries.$day.$hour', data);
                       Navigator.pop(context);
                     }
                     // bowlControllers.forEach((element) {
@@ -249,9 +253,8 @@ class _ComponentState extends State<Component> {
                       return Container(
                         margin: const EdgeInsets.all(2.0),
                         decoration: BoxDecoration(
-                          border: Border.all(
-                              color: Theme.of(context).buttonColor
-                              ),
+                          border:
+                              Border.all(color: Theme.of(context).buttonColor),
                         ),
                         child: ListTile(
                           leading: widget.imgs.length > 0
@@ -267,7 +270,8 @@ class _ComponentState extends State<Component> {
                           onTap: () {
                             setState(() {
                               value = widget.options[index];
-                              bowlControllers[widget.id].text = value;
+                              bowlControllers[widget.id].text =
+                                  index.toString();
                             });
                             Navigator.pop(context);
                           },
