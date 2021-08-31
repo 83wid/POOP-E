@@ -29,27 +29,29 @@ userScheme(name, email) => {
       },
     };
 
-class User {
+class Users {
   String completed;
   String email;
   Map<String, dynamic> medicine;
   Map<String, dynamic> medicineTakes;
-  Map<String,  Map<String, dynamic>> bowlEntries;
+  Map<String, dynamic> bowlEntries;
   String name;
   String waterAmount;
+  String waterDrank;
 
-  User(this.bowlEntries, this.completed, this.email, this.medicine,
-      this.medicineTakes, this.name, this.waterAmount);
+  Users(this.bowlEntries, this.completed, this.email, this.medicine,
+      this.medicineTakes, this.name, this.waterAmount, this.waterDrank);
 
-  factory User.fromJson(dynamic json) {
-    return User(
-        json['bowlEntries'] as Map<String,  Map<String, dynamic>>,
+  factory Users.fromJson(dynamic json) {
+    return Users(
+        json['bowlEntries'] as Map<String, dynamic>,
         json['completed'] as String,
         json['email'] as String,
         json['medicine'] as Map<String, dynamic>,
         json['medicineTakes'] as Map<String, dynamic>,
         json['name'] as String,
-        json['waterAmount'] as String);
+        json['waterAmount'] as String,
+        json['waterDrank'] as String);
   }
 }
 
@@ -83,6 +85,7 @@ class UserController {
     if (propName == 'name') return userprops.name;
     if (propName == 'email') return userprops.email;
     if (propName == 'waterAmount') return userprops.waterAmount;
+    if (propName == 'waterDrank') return userprops.waterDrank;
     if (propName == 'medicineAmount')
       return userprops.medicine['medicineAmount'].toString();
     if (propName == 'medicineTakeNum')
@@ -92,15 +95,15 @@ class UserController {
     if (propName == 'medicineType')
       return userprops.medicine['medicineType'].toString();
     if (propName == 'medicineTakes' && takeId != null)
-      return userprops.medicineTakes[takeId].toString();
+      return userprops.medicineTakes[takeId]['time'].toString();
     if (propName == 'completed') return userprops.completed;
   }
 
-  static Future<User> getAllProp() async {
+  static Future<Users> getAllProp() async {
     final currentUserid = FirebaseAuth.instance.currentUser?.uid;
     CollectionReference users = FirebaseFirestore.instance.collection('users');
     final userData = await users.doc(currentUserid).get();
-    final userprops = User.fromJson(userData.data());
+    final userprops = Users.fromJson(userData.data());
     return userprops;
   }
 }
