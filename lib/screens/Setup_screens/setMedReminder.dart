@@ -40,7 +40,7 @@ class _SetMedReminderScreenState extends State<SetMedReminderScreen> {
             await UserController.getProp('medicineTakes', takeId: i.toString());
         print(item);
         setState(() {
-          if (item != null) entries[i.toString()] = item;
+          if (item != null) entries[i.toString()]['time'] = item;
           numTakes = takesNum;
         });
       }
@@ -103,18 +103,12 @@ class _SetMedReminderScreenState extends State<SetMedReminderScreen> {
                 // Submit Button:
                 GestureDetector(
                   onTap: () async => {
-                    // UserController.createProp('medicine', {
-                    //   // 'medicineName': medNameController.text,
-                    //   // 'medicineType': medTypeController.text,
-                    //   // 'medicineAmount': medAmountController.text,
-                    //   // 'medicineTakes': MedTakesController.text,
-                    // }),
                     if (entries.isNotEmpty)
                       {
                         UserController.createProp('medicineTakes', entries)
                             .then((value) => {
                                   entries.forEach((key, value) async {
-                                    final val = value.split(':');
+                                    final val = value['time'].split(':');
                                     final _name = await UserController.getProp(
                                         'medicineName');
                                     final _dose = await UserController.getProp(
@@ -150,7 +144,7 @@ class _SetMedReminderScreenState extends State<SetMedReminderScreen> {
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Color(0xFFBC6F2B),
+                      color: Color(0xFF2b1605),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     // height: MediaQuery.of(context).size.height / (15),
@@ -231,7 +225,8 @@ class _MedTakeState extends State<MedTake> {
                 setState(() {
                   if (time != null) {
                     value = time.toString();
-                    entries[widget.index.toString()] =
+                    entries[widget.index.toString()]['taken'] = 'false';
+                    entries[widget.index.toString()]['time'] =
                         value.substring(10, value.length - 1);
                   }
                 })

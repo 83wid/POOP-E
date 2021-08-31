@@ -195,7 +195,7 @@ class _SetMedsScreenState extends State<SetMedsScreen> {
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Color(0xFFBC6F2B),
+                      color: Color(0xFF2b1605),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     // height: MediaQuery.of(context).size.height / (15),
