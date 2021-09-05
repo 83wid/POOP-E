@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:poopingapp/Controllers/medsController.dart';
 import 'package:poopingapp/Controllers/userController.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:poopingapp/screens/homeScreen.dart';
 import 'package:poopingapp/utilities/notificationManager.dart';
 
-late Map<String, dynamic> entries = new Map();
+late Map<String, Map<String, dynamic>> entries = new Map();
 
 final manager = NotificationManager();
 
 class SetMedReminderScreen extends StatefulWidget {
-  SetMedReminderScreen({Key? key, required this.takes}) : super(key: key);
+  SetMedReminderScreen(
+      {Key? key, required this.data, required this.medId, this.oldData})
+      : super(key: key);
 
-  final int takes;
+  final Medicine data;
+  final String medId;
+  final dynamic oldData;
 
   @override
   _SetMedReminderScreenState createState() => _SetMedReminderScreenState();
@@ -32,18 +37,15 @@ class _SetMedReminderScreenState extends State<SetMedReminderScreen> {
 
   void initentries() async {
     // final userdata = await UserController.getAllProp();
-    final takesNum = await UserController.getProp('medicineTakeNum');
     int i = -1;
-    if (takesNum != null) {
-      while (++i < int.parse(takesNum)) {
-        dynamic item =
-            await UserController.getProp('medicineTakes', takeId: i.toString());
-        print(item);
+      final items = await UserController.getProp('medicineTakes', medId: widget.medId);
+      // print(items[widget.medId]);
+      while (++i < int.parse(widget.data.medicineTakes)) {
         setState(() {
-          if (item != null) entries[i.toString()]['time'] = item;
-          numTakes = takesNum;
+          entries[i.toString()] = {'time': '', 'taken': '0'};
+          if (items != null && items[widget.medId].length != 0)
+            entries[i.toString()] = items[i.toString()];
         });
-      }
     }
   }
 
@@ -89,7 +91,7 @@ class _SetMedReminderScreenState extends State<SetMedReminderScreen> {
                   height: MediaQuery.of(context).size.height / 4,
                   child: ListView.builder(
                       padding: const EdgeInsets.all(8),
-                      itemCount: widget.takes,
+                      itemCount: int.parse(widget.data.medicineTakes),
                       itemBuilder: (BuildContext context, int index) {
                         return MedTake(
                           selectTime: _selectTime,
@@ -105,31 +107,29 @@ class _SetMedReminderScreenState extends State<SetMedReminderScreen> {
                   onTap: () async => {
                     if (entries.isNotEmpty)
                       {
-                        UserController.createProp('medicineTakes', entries)
+                        UserController.createProp(
+                                'medicineTakes.${widget.medId}', entries)
                             .then((value) => {
                                   entries.forEach((key, value) async {
                                     final val = value['time'].split(':');
-                                    final _name = await UserController.getProp(
-                                        'medicineName');
-                                    final _dose = await UserController.getProp(
-                                        'medicineAmount');
-                                    final _type = await UserController.getProp(
-                                        'medicineType');
-                                    if (_name != null &&
-                                        _dose != null &&
-                                        _type != null) {
-                                      print(_name + ' ' + _type + ' ' + _dose);
-                                      manager.showNotificationDaily(
-                                          int.parse(key),
-                                          'Meds to Take' + _name,
-                                          'Your Dose is: ' +
-                                              _dose +
-                                              ' ' +
-                                              _type +
-                                              ' of The Day',
-                                          int.parse(val[0]),
-                                          int.parse(val[1]));
-                                    }
+
+                                    print(widget.data.medicineName +
+                                        ' ' +
+                                        widget.data.medicineType +
+                                        ' ' +
+                                        widget.data.medicineAmount);
+                                    manager.showNotificationDaily(
+                                        int.parse(key),
+                                        'Meds to Take' +
+                                            widget.data.medicineName,
+                                        'Your Dose is: ' +
+                                            widget.data.medicineAmount +
+                                            ' ' +
+                                            widget.data.medicineType +
+                                            ' of The Day',
+                                        int.parse(val[0]),
+                                        int.parse(val[1]));
+
                                     // print(key.toString() + ': ' + value);
                                   }),
                                   UserController.createProp(
@@ -225,8 +225,9 @@ class _MedTakeState extends State<MedTake> {
                 setState(() {
                   if (time != null) {
                     value = time.toString();
-                    entries[widget.index.toString()]['taken'] = 'false';
-                    entries[widget.index.toString()]['time'] =
+                    entries[widget.index.toString()] = Map();
+                    entries[widget.index.toString()]!['taken'] = '0';
+                    entries[widget.index.toString()]!['time'] =
                         value.substring(10, value.length - 1);
                   }
                 })
@@ -240,7 +241,7 @@ class _MedTakeState extends State<MedTake> {
   }
 }
 
-Widget takeText(String? name, index) {
+Widget takeText(Map<String, dynamic>? name, index) {
   String value = '';
   final takes = [
     'Fisrt',
@@ -253,7 +254,7 @@ Widget takeText(String? name, index) {
     'Seventh',
   ];
   if (name != null) {
-    value = name;
+    value = name['time'];
   }
   return value != '' ? Text(value) : Text(takes[index] + ' Take');
 }

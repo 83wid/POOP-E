@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:poopingapp/Controllers/medsController.dart';
 import 'package:poopingapp/Controllers/userController.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:poopingapp/screens/Setup_screens/setMedReminder.dart';
@@ -157,8 +158,7 @@ class _SetMedsScreenState extends State<SetMedsScreen> {
                         validator: (_value) {
                           if (_isNumeric(_value) == false) {
                             return 'This isn\'t a number';
-                          }
-                          else if (_value != null && int.parse(_value) > 7)
+                          } else if (_value != null && int.parse(_value) > 7)
                             return 'Too much for one Day';
                           return '';
                         },
@@ -176,46 +176,60 @@ class _SetMedsScreenState extends State<SetMedsScreen> {
                   ],
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height / (40)),
-                GestureDetector(
-                  onTap: () async => {
-                    UserController.createProp('medicine', {
-                      'medicineName': medNameController.text,
-                      'medicineType': medTypeController.text,
-                      'medicineAmount': medAmountController.text,
-                      'medicineTakes': medTakesController.text,
-                    }),
-                    // UserController.createProp('completed', 'true'),
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return SetMedReminderScreen(
-                        takes: int.parse(medTakesController.text),
-                      );
-                    })),
-                    print('water stored'),
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Color(0xFF2b1605),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    // height: MediaQuery.of(context).size.height / (15),
-                    // width: MediaQuery.of(context).size.width / (1.2 * 2),
-                    child: Center(
-                      child: Padding(
-                        padding: EdgeInsets.only(bottom: 10.0, top: 10.0),
+                FutureBuilder<Users>(
+                  future: UserController.getAllProp(),
+                  builder: (context, AsyncSnapshot<Users>snapshot) {
+                    String lenght = snapshot.data!.medicine.length.toString();
+                    return GestureDetector(
+                      onTap: () async => {
+                        UserController.createProp(
+                            'medicine.$lenght',
+                            medSchema(
+                              medNameController.text,
+                              medTypeController.text,
+                              medTakesController.text,
+                              medAmountController.text,
+                            )),
+                        // UserController.createProp('completed', 'true'),
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return SetMedReminderScreen(
+                            data: Medicine(
+                              medNameController.text,
+                              medTypeController.text,
+                              medTakesController.text,
+                              medAmountController.text,
+                            ),
+                            medId: lenght.toString(),
+                          );
+                        })),
+                        print('water stored'),
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Color(0xFF2b1605),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        // height: MediaQuery.of(context).size.height / (15),
+                        // width: MediaQuery.of(context).size.width / (1.2 * 2),
                         child: Center(
-                          child: Text(
-                            'Next',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold,
+                          child: Padding(
+                            padding: EdgeInsets.only(bottom: 10.0, top: 10.0),
+                            child: Center(
+                              child: Text(
+                                'Next',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
+                    );
+                  }
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height / (5)),
               ],
