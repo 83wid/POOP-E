@@ -9,7 +9,6 @@ import 'package:poopingapp/screens/insertBowl.dart';
 import 'package:poopingapp/screens/waterUpdate.dart';
 import 'package:poopingapp/utilities/charts.dart';
 import 'package:poopingapp/utilities/monthCalendar.dart';
-import 'package:poopingapp/utilities/notificationManager.dart';
 import 'package:poopingapp/utilities/styles.dart';
 // import 'dart:isolate';
 // import 'dart:ui';
@@ -169,6 +168,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       'assets/images/noPain.png',
                                       'assets/images/moderatePain.png',
                                       'assets/images/unbearablePain.png',
+                                      'assets/images/intensePain.png',
                                     ];
                                     String image = imgs[0];
                                     if (snapshot.data != null) {
@@ -225,12 +225,21 @@ class _MyHomePageState extends State<MyHomePage> {
                                           color = Colors.green;
                                           image = imgs[0];
                                         }
-                                        final poopDays = timeSinceLatepooped(bowl);
-                                        if (poopDays > 2)
-                                        {
-                                          text = "$poopDays days since you last Pooped";
-                                          color = Colors.red;
-                                          image = imgs[2];
+                                        final poopDays =
+                                            timeSinceLatepooped(bowl);
+                                        if (poopDays > 2) {
+                                          text =
+                                              "$poopDays days since you last Pooped";
+                                          color = poopDays >= 3
+                                              ? Colors.orange
+                                              : Colors.yellow;
+                                          color = poopDays >= 4
+                                              ? Colors.red
+                                              : color;
+                                          image =
+                                              poopDays >= 3 ? imgs[3] : imgs[1];
+                                          image =
+                                              poopDays > 4 ? imgs[2] : image;
                                         }
                                         return Column(
                                           mainAxisAlignment:
@@ -412,10 +421,14 @@ Future<void> signOut({required BuildContext context}) async {
   }));
 }
 
-int timeSinceLatepooped(Map data)
-{
-  final listdayspermonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-  final date = DateTime.parse(data.entries.last.value['time']);
-  if (date.month == DateTime.now().month) return DateTime.now().day - date.day;
-  else return listdayspermonth[date.month] - date.day + DateTime.now().day;
+int timeSinceLatepooped(Map data) {
+  if (data.length > 0) {
+    final listdayspermonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    final date = DateTime.parse(data.entries.last.value['time']);
+    if (date.month == DateTime.now().month)
+      return DateTime.now().day - date.day;
+    else
+      return listdayspermonth[date.month] - date.day + DateTime.now().day;
+  }
+  return 0;
 }
