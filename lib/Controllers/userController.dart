@@ -6,27 +6,10 @@ userScheme(name, email) => {
       'email': email,
       'name': name,
       'waterAmount': '0',
-      'medicine': {
-        'medicineName': '',
-        'medicineType': '',
-        'medicineTakes': '',
-        'medicineAmount': '',
-      },
+      'waterDrank': '0',
+      'medicine': {},
       'medicineTakes': {},
-      'bowlEntries': {
-        'type': '',
-        'color': '',
-        'smell': '',
-        'volume': '',
-        'pain': '',
-        'symptoms': '',
-        'duration': '',
-        'blood': 'false',
-        'floatiness': 'false',
-        'flalulence': 'false',
-        'evacuatingStrain': 'false',
-        'time': '',
-      },
+      'bowlEntries': {},
     };
 
 class Users {
@@ -79,24 +62,21 @@ class UserController {
         .catchError((error) => print("Failed to add user: $error"));
   }
 
-  static Future<String?> getProp(propName, {String? takeId}) async {
+  static Future<dynamic> getProp(propName, {String? medId}) async {
     final userprops = await getAllProp();
     // if (propName == 'all') return userprops;
     if (propName == 'name') return userprops.name;
     if (propName == 'email') return userprops.email;
     if (propName == 'waterAmount') return userprops.waterAmount;
     if (propName == 'waterDrank') return userprops.waterDrank;
-    if (propName == 'medicineAmount')
-      return userprops.medicine['medicineAmount'].toString();
-    if (propName == 'medicineTakeNum')
-      return userprops.medicine['medicineTakes'].toString();
-    if (propName == 'medicineName')
-      return userprops.medicine['medicineName'].toString();
-    if (propName == 'medicineType')
-      return userprops.medicine['medicineType'].toString();
-    if (propName == 'medicineTakes' && takeId != null)
-      return userprops.medicineTakes[takeId]['time'].toString();
+    if (propName == 'bowlEntries') return userprops.bowlEntries;
+    if (propName == 'medicine' && medId != null)
+      return userprops.medicine[medId];
+    else if (propName == 'medicine') return userprops.medicine;
     if (propName == 'completed') return userprops.completed;
+    if (propName == 'medicineTakes' && medId != null)
+      return userprops.medicineTakes[medId];
+    else if (propName == 'medicineTakes') return userprops.medicineTakes;
   }
 
   static Future<Users> getAllProp() async {
