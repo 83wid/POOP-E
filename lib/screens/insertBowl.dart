@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:poopingapp/Controllers/bowlController.dart';
 import 'package:poopingapp/Controllers/userController.dart';
+import 'package:poopingapp/screens/homeScreen.dart';
 import 'package:poopingapp/utilities/styles.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
@@ -98,8 +99,7 @@ class _InsertBowlState extends State<InsertBowl> {
                           final date = await DatePicker.showDateTimePicker(
                               context,
                               showTitleActions: true,
-                              minTime: DateTime(
-                                  DateTime.now().year, DateTime.now().month, 1),
+                              minTime: minValue(),
                               maxTime: DateTime.now(), onChanged: (date) {
                             print('change $date');
                           }, onConfirm: (date) {
@@ -107,9 +107,10 @@ class _InsertBowlState extends State<InsertBowl> {
                           },
                               currentTime: DateTime.now(),
                               locale: LocaleType.en);
-                          setState(() {
-                            bowlControllers[11].text = date.toString();
-                          });
+                          if (date != null)
+                            setState(() {
+                              bowlControllers[11].text = date.toString();
+                            });
                         },
                         child: Container(
                           child: Row(
@@ -201,6 +202,10 @@ class _InsertBowlState extends State<InsertBowl> {
                       await UserController.createProp(
                           'bowlEntries.$day.$hour', data);
                       Navigator.pop(context);
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) {
+                        return MyHomePage(title: '');
+                      }));
                     }
                     // bowlControllers.forEach((element) {
                     //   print(element.text);
@@ -331,4 +336,16 @@ Widget myValue(String value) {
       new Icon(Icons.forward),
     ],
   );
+}
+
+DateTime minValue() {
+  final monthday = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  final today = new DateTime.now();
+  final back = today.day - 7;
+
+  if (back < 0) {
+    final month = today.month == 1 ? 12 : today.month - 1;
+    return DateTime(today.year, month, monthday[month] + back);
+  }
+  return DateTime(today.year, today.month, back);
 }
