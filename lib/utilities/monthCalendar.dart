@@ -104,7 +104,7 @@ Widget dayCalander(context, int index, int weekid, Map<String, dynamic> data) {
                   children: [
                     Container(
                       // color: Colors.brown[100],
-                      child: Image.asset('assets/images/type$imgId.png',
+                      child: Image.asset('assets/images/type${int.parse(imgId) + 1}.png',
                           width: MediaQuery.of(context).size.width / 20,
                           fit: BoxFit.contain),
                     ),
