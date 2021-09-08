@@ -52,8 +52,8 @@ checkTakeState() async {
 }
 
 bool compareTime(String time) {
-  int hour = int.parse(time.substring(0, 2));
-  int minute = int.parse(time.substring(3, time.length));
+  int hour = int.parse(time.substring(0, time.indexOf(':')));
+  int minute = int.parse(time.substring(time.indexOf(':') + 1, time.length));
   if (hour < DateTime.now().hour ||
       (hour == DateTime.now().hour && minute < DateTime.now().minute)) {
     return true;
