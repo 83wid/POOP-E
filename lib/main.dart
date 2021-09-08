@@ -60,7 +60,7 @@ void checkTakesNotif() async {
   await Firebase.initializeApp();
   final int isolateId = Isolate.current.hashCode;
   final meds = await UserController.getProp('medicine');
-  final takes = await UserController.getProp('medicineTakes');
+  final takes = await getdaymeds(DateTime.now());
   final notif = NotificationManager();
   if (takes.length > 0) {
     int i = 0;
