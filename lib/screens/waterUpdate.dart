@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:poopingapp/Controllers/userController.dart';
+import 'package:poopingapp/Controllers/waterController.dart';
 import 'package:poopingapp/utilities/styles.dart';
 import 'homeScreen.dart';
 
@@ -32,7 +33,7 @@ class _WaterUpdateScreenState extends State<WaterUpdateScreen> {
                   width: MediaQuery.of(context).size.width / 1.3,
                   fit: BoxFit.contain),
               FutureBuilder<Map>(
-                  future: waterProps(),
+                  future: waterTodayProps(),
                   builder: (context, snapshot) {
                     if (snapshot.data != null) {
                       return Container(
@@ -53,7 +54,7 @@ class _WaterUpdateScreenState extends State<WaterUpdateScreen> {
                                   style: Styles.defaultTextStyleWhite,
                                   children: [
                                     TextSpan(
-                                        text: snapshot.data!['waterAmount'],
+                                        text: snapshot.data!['waterTarget'],
                                         style: TextStyle(
                                             color: Colors.black, fontSize: 24)),
                                     TextSpan(
@@ -77,7 +78,7 @@ class _WaterUpdateScreenState extends State<WaterUpdateScreen> {
                                   style: Styles.defaultTextStyleWhite,
                                   children: [
                                     TextSpan(
-                                        text: snapshot.data!['waterDrank'],
+                                        text: snapshot.data!['waterDrunk'],
                                         style: TextStyle(
                                             color: Colors.black, fontSize: 24)),
                                     TextSpan(
@@ -152,10 +153,12 @@ class _WaterUpdateScreenState extends State<WaterUpdateScreen> {
                           ],
                         );
                       });
-                  final drunk = await UserController.getProp('waterDrank');
-                  sip = sip + double.parse(drunk);
+                    
+                  final drunk = await waterTodayProps();
+                  final today = DateTime.now().toString().substring(0, DateTime.now().toString().indexOf(' '));
+                  drunk['waterDrunk'] = (sip + double.parse(drunk['waterDrunk'])).toStringAsFixed(2);
                   await UserController.createProp(
-                      'waterDrank', sip.toStringAsFixed(2));
+                      'waterDrank.$today', drunk);
                 },
                 child: Container(
                     decoration: BoxDecoration(
@@ -179,11 +182,4 @@ class _WaterUpdateScreenState extends State<WaterUpdateScreen> {
       ),
     );
   }
-}
-
-Future<Map> waterProps() async {
-  return {
-    'waterAmount': await UserController.getProp('waterAmount'),
-    'waterDrank': await UserController.getProp('waterDrank'),
-  };
 }
