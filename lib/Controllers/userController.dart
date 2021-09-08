@@ -17,13 +17,14 @@ class Users {
   String email;
   Map<String, dynamic> medicine;
   Map<String, dynamic> medicineTakes;
+  Map<String, dynamic> medicineTakesEntries;
   Map<String, dynamic> bowlEntries;
   String name;
   String waterAmount;
-  String waterDrank;
+  Map<String, dynamic> waterDrank;
 
   Users(this.bowlEntries, this.completed, this.email, this.medicine,
-      this.medicineTakes, this.name, this.waterAmount, this.waterDrank);
+      this.medicineTakes, this. medicineTakesEntries, this.name, this.waterAmount, this.waterDrank);
 
   factory Users.fromJson(dynamic json) {
     return Users(
@@ -32,9 +33,10 @@ class Users {
         json['email'] as String,
         json['medicine'] as Map<String, dynamic>,
         json['medicineTakes'] as Map<String, dynamic>,
+        json['medicineTakesEntries'] as Map<String, dynamic>,
         json['name'] as String,
         json['waterAmount'] as String,
-        json['waterDrank'] as String);
+        json['waterDrank'] as Map<String, dynamic>);
   }
 }
 
@@ -70,6 +72,7 @@ class UserController {
     if (propName == 'waterAmount') return userprops.waterAmount;
     if (propName == 'waterDrank') return userprops.waterDrank;
     if (propName == 'bowlEntries') return userprops.bowlEntries;
+    if (propName == 'medicineTakesEntries') return userprops.medicineTakesEntries;
     if (propName == 'medicine' && medId != null)
       return userprops.medicine[medId];
     else if (propName == 'medicine') return userprops.medicine;

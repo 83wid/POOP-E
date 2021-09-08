@@ -1,5 +1,4 @@
 import 'package:poopingapp/Controllers/userController.dart';
-// import 'package:poopingapp/utilities/notificationManager.dart';
 
 class Medicine {
   String medicineName;
@@ -18,25 +17,13 @@ medSchema(medicineName, medicineType, medicineTakes, medicineAmount) => {
     };
 
 restTakesState() async {
-  final map = await UserController.getProp('medicineTakes');
-  if (map.length > 0) {
-    Map<String, dynamic> result = new Map();
-    map.forEach((key, value) {
-      result[key] = new Map();
-      value.forEach((key1, value1) {
-        result[key][key1] = new Map();
-        result[key][key1]['time'] = value1['time'];
-        result[key][key1]['taken'] = '0';
-      });
-    });
-    await UserController.createProp('medicineTakes', result);
-  }
+  await getdaymeds(DateTime.now());
 }
 
 checkTakeState() async {
   bool update = false;
   final meds = await UserController.getProp('medicine');
-  final takes = await UserController.getProp('medicineTakes');
+  final takes = await getdaymeds(DateTime.now());
   if (takes.length > 0) {
     Map<String, dynamic> result = new Map();
     int i = 0;
@@ -54,17 +41,6 @@ checkTakeState() async {
               ' take at ' +
               value1['time'] +
               ' Is running late');
-              // final notif = NotificationManager();
-          // notif.showNotificationDaily(
-          //     1,
-          //     'Medicine running late',
-          //     meds[i.toString()]['medicineName'] +
-          //         ' take at ' +
-          //         value1['time'] +
-          //         ' Is running late',
-          //     DateTime.now().hour,
-          //     DateTime.now().minute + 1);
-        
         }
       });
       i++;
@@ -83,4 +59,31 @@ bool compareTime(String time) {
     return true;
   }
   return false;
+}
+
+Future<Map<String, dynamic>> getdaymeds(DateTime day) async {
+  final format = day.toString().substring(0, day.toString().indexOf(' '));
+
+  final allData = await UserController.getAllProp();
+
+  if (allData.medicineTakesEntries[format] != null)
+    return allData.medicineTakesEntries[format];
+  else {
+    final dayData = allData.medicineTakes;
+    await UserController.createProp('medicineTakesEntries.$format', dayData);
+    return dayData;
+  }
+}
+
+bool checkMedStatus(data) {
+  if (data != null) {
+    int i = -1;
+    while (++i < data.length) {
+      int j = -1;
+      while (++j < data[i.toString()].length)
+        if (data[i.toString()][j.toString()]['taken'] == '0') return true;
+    }
+    return false;
+  }
+  return true;
 }
