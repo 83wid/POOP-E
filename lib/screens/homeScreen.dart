@@ -10,10 +10,7 @@ import 'package:poopingapp/screens/waterUpdate.dart';
 import 'package:poopingapp/utilities/charts.dart';
 import 'package:poopingapp/utilities/monthCalendar.dart';
 import 'package:poopingapp/utilities/styles.dart';
-// import 'dart:isolate';
-// import 'dart:ui';
 
-// String portname = 'portName';
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, required this.title}) : super(key: key);
 
@@ -28,22 +25,6 @@ class _MyHomePageState extends State<MyHomePage> {
   var email;
   var name;
   Color color = Colors.green;
-  // ReceivePort port = new ReceivePort();
-  // @override
-  // void initState()  {
-  //   super.initState();
-  // }
-  // initIsolate() {
-  //   if(!IsolateNameServer.registerPortWithName(port.sendPort, portname))
-  //   {
-  //     throw "Unable to register $port with $portname";
-  //   }
-  // }
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  //   IsolateNameServer.removePortNameMapping(portname);
-  // }
   @override
   Widget build(BuildContext context) {
     if (user?.email != null && user?.displayName != null) {
@@ -174,18 +155,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                     if (snapshot.data != null) {
                                       Map<int, dynamic> bowl =
                                           bowlToMap(snapshot.data!.bowlEntries);
-                                      final date = DateTime.now()
-                                          .toString()
-                                          .substring(0, 10);
-                                      int count = 0;
-                                      bowl.forEach((key, value) {
-                                        if (value['time'].substring(0, 8) ==
-                                            DateTime.now()
-                                                .toString()
-                                                .substring(0, 8)) {
-                                          count++;
-                                        }
-                                      });
                                       if (bowl.length == 0) {
                                         return RichText(
                                             text: TextSpan(
@@ -194,74 +163,74 @@ class _MyHomePageState extends State<MyHomePage> {
                                                     Styles.smallTextStyleWhite,
                                                 children: [
                                               TextSpan(
-                                                  text: 'No Entries Yet',
+                                                  text: 'No Entries Found',
                                                   style: TextStyle(
                                                       color: Colors.black))
                                             ]));
                                       }
                                       // print(bowl[date]);
-                                      if (count != 0) {
-                                        final int days = int.parse(
-                                            date.substring(
-                                                date.length - 2, date.length));
-                                        final per = days / count;
-                                        String text = '';
-                                        if (per == 1) {
-                                          text = 'Once per day';
-                                          color = Colors.green;
-                                          image = imgs[0];
-                                        }
-                                        if (per > 1) {
-                                          text = 'Once per ' +
-                                              per.toStringAsFixed(1) +
-                                              ' days';
-                                          color = per > 2
-                                              ? Colors.red
-                                              : Colors.yellow;
-                                          image = per > 2 ? imgs[2] : imgs[1];
-                                        } else {
-                                          text = (1 / per).toStringAsFixed(1) +
-                                              ' times per day';
-                                          color = Colors.green;
-                                          image = imgs[0];
-                                        }
-                                        final poopDays =
-                                            timeSinceLatepooped(bowl);
-                                        if (poopDays > 2) {
-                                          text =
-                                              "$poopDays days since you last Pooped";
-                                          color = poopDays >= 3
-                                              ? Colors.orange
-                                              : Colors.yellow;
-                                          color = poopDays >= 4
-                                              ? Colors.red
-                                              : color;
-                                          image =
-                                              poopDays >= 3 ? imgs[3] : imgs[1];
-                                          image =
-                                              poopDays > 4 ? imgs[2] : image;
-                                        }
-                                        return Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Image.asset(image),
-                                            Text(''),
-                                            RichText(
-                                              text: TextSpan(
-                                                  text: '',
-                                                  style: Styles
-                                                      .smallTextStyleWhite,
-                                                  children: [
-                                                    TextSpan(
-                                                        text: text,
-                                                        style: TextStyle(
-                                                            color: color))
-                                                  ]),
-                                            ),
-                                          ],
-                                        );
-                                      }
+                                      // if (count != 0) {
+                                      // final int days = int.parse(
+                                      //     date.substring(
+                                      //         date.length - 2, date.length));
+                                      // final per = days / count;
+                                      String text = '';
+                                      // if (per == 1) {
+                                      //   text = 'Once per day';
+                                      //   color = Colors.green;
+                                      //   image = imgs[0];
+                                      // }
+                                      // if (per > 1) {
+                                      //   text = 'Once per ' +
+                                      //       per.toStringAsFixed(1) +
+                                      //       ' days';
+                                      //   color = per > 2
+                                      //       ? Colors.red
+                                      //       : Colors.yellow;
+                                      //   image = per > 2 ? imgs[2] : imgs[1];
+                                      // } else {
+                                      //   text = (1 / per).toStringAsFixed(1) +
+                                      //       ' times per day';
+                                      //   color = Colors.green;
+                                      //   image = imgs[0];
+                                      // }
+                                      final poopDays =
+                                          timeSinceLatepooped(bowl);
+                                      // if (poopDays > 2) {
+                                      text = poopDays > 0 ?
+                                          "$poopDays days since you last Pooped" : "Yaay!! You've pooped just Today";
+                                      color =
+                                          poopDays >= 2 ? Colors.yellow : Colors.green;
+                                      color = poopDays >= 3
+                                          ? Colors.orange
+                                          : color;
+                                      color =
+                                          poopDays >= 4 ? Colors.red : color;
+                                      image = poopDays >= 2 ? imgs[1] : image;
+                                      image = poopDays >= 3 ? imgs[3] : image;
+                                      image = poopDays > 4 ? imgs[2] : image;
+                                      // }
+                                      return Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Image.asset(image),
+                                          Text(''),
+                                          RichText(
+                                            text: TextSpan(
+                                                text: '',
+                                                style:
+                                                    Styles.smallTextStyleWhite,
+                                                children: [
+                                                  TextSpan(
+                                                      text: text,
+                                                      style: TextStyle(
+                                                          color: color))
+                                                ]),
+                                          ),
+                                        ],
+                                      );
+                                      // }
                                     }
                                     return Container();
                                   })
@@ -344,16 +313,6 @@ class _MyHomePageState extends State<MyHomePage> {
                             if (snapshot.data != null) {
                               Map<int, dynamic> bowl =
                                   bowlToMap(snapshot.data!.bowlEntries);
-                              // bowl = SplayTreeMap.from(bowl, (a, b) {
-                              //   final day1 = DateTime.parse(bowl[a]['time']);
-                              //   final day2 = DateTime.parse(bowl[b]['time']);
-                              //   if (day1.year > day2.year &&
-                              //       day1.month > day2.month &&
-                              //       day1.day > day2.day) {
-                              //     return 1;
-                              //   }
-                              //   return -1;
-                              // });
                               return Expanded(
                                 child: Container(
                                   width: MediaQuery.of(context).size.width,
