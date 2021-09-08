@@ -20,13 +20,13 @@ String name = 'portName';
 void waterRestState() async {
 if(DateTime.now().hour == 0){  final int isolateId = Isolate.current.hashCode;
   await Firebase.initializeApp();
-  await UserController.createProp('waterDrank', '0').catchError((err) {
-    print({'message': err.message, 'id': isolateId});
-  });
+  // await UserController.createProp('waterDrank', '0').catchError((err) {
+  //   print({'message': err.message, 'id': isolateId});
+  // });
+  print({'id': isolateId});}
   await restTakesState().catchError((err) {
     print(err.message);
   });
-  print({'id': isolateId});}
 }
 
 void watercheckState() async {
@@ -104,7 +104,7 @@ void main() async {
     wakeup: true,
   );
   await AndroidAlarmManager.periodic(
-    const Duration(minutes: 30),
+    const Duration(minutes: 1),
     1,
     waterRestState,
     exact: true,
