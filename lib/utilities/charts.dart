@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:poopingapp/Controllers/userController.dart';
+import 'package:poopingapp/Controllers/waterController.dart';
 import 'package:poopingapp/screens/medsListing.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class WaterChart extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: getWaterprops(),
-        builder: (context, AsyncSnapshot<List<String>> snapshot) {
+        future: waterTodayProps(),
+        builder: (context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
           if (snapshot.data != null) {
-            final amount = double.parse(snapshot.data![0]);
-            final drank = double.parse(snapshot.data![1]);
+            final amount = double.parse(snapshot.data!['waterTarget']);
+            final drank = double.parse(snapshot.data!['waterDrunk']);
             final still = amount - drank;
             final List<_WaterData>? waterData = [
               _WaterData('To drink', still, still.toStringAsFixed(2) + ' L'),
@@ -45,16 +46,6 @@ class WaterChart extends StatelessWidget {
   }
 }
 
-Future<List<String>> getWaterprops() async {
-  final List<String> data = new List.generate(2, (index) => '');
-  final String? drank = await UserController.getProp('waterDrank');
-  final String? amount = await UserController.getProp('waterAmount');
-  data[0] = amount != null ? amount : '';
-  data[1] = drank != null ? drank : '';
-  // print(data);
-  return data;
-}
-
 class _WaterData {
   _WaterData(this.xData, this.yData, [this.text]);
   final String? xData;
@@ -79,7 +70,11 @@ class MedsChart extends StatelessWidget {
         builder: (context, AsyncSnapshot<Users> snapshot) {
           if (snapshot.connectionState == ConnectionState.done &&
               snapshot.data != null) {
-            final Map<String, dynamic> takesData = snapshot.data!.medicineTakes;
+            final today = DateTime.now()
+                .toString()
+                .substring(0, DateTime.now().toString().indexOf(' '));
+            final Map<String, dynamic> takesData =
+                snapshot.data!.medicineTakesEntries[today];
             if (takesData.length > 0) {
               // print('tkaes: ');
               // print(takesData.length);
