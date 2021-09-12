@@ -17,16 +17,11 @@ import 'package:android_alarm_manager/android_alarm_manager.dart';
 
 String name = 'portName';
 
-void waterRestState() async {
-if(DateTime.now().hour == 0){  final int isolateId = Isolate.current.hashCode;
+void takeState() async {
+  final int isolateId = Isolate.current.hashCode;
   await Firebase.initializeApp();
-  // await UserController.createProp('waterDrank', '0').catchError((err) {
-  //   print({'message': err.message, 'id': isolateId});
-  // });
-  print({'id': isolateId});}
-  await restTakesState().catchError((err) {
-    print(err.message);
-  });
+  checkTakeState();
+  print({'id' : 'meds update', 'isolateId': isolateId});
 }
 
 void watercheckState() async {
@@ -41,19 +36,17 @@ void watercheckState() async {
         await UserController.getProp('waterAmount').catchError((err) {
       print({'message': err.message, 'id': isolateId});
     });
-    if (drunk / amount < (DateTime.now().hour - 6) / 16)
-    {
+    if (drunk / amount < (DateTime.now().hour - 6) / 12) {
       final notif = NotificationManager();
       notif.showNotificationDaily(
-              3,
-              'You should drink some water',
-              'you out of schedule',
-              DateTime.now().hour,
-              DateTime.now().minute + 1);
-        
+          3,
+          'You should drink some water',
+          'you out of schedule',
+          DateTime.now().hour,
+          DateTime.now().minute + 1);
     }
   }
-  print({'id': isolateId});
+  print({'id': 'water', 'isolateId': isolateId});
 }
 
 void checkTakesNotif() async {
@@ -85,7 +78,7 @@ void checkTakesNotif() async {
       i++;
     });
   }
-  print({'isolateId': isolateId});
+  print({'id': 'meds late', 'isolateId': isolateId});
 }
 
 void main() async {
@@ -106,7 +99,7 @@ void main() async {
   await AndroidAlarmManager.periodic(
     const Duration(minutes: 1),
     1,
-    waterRestState,
+    takeState,
     exact: true,
     rescheduleOnReboot: true,
     wakeup: true,
@@ -114,7 +107,7 @@ void main() async {
     print(err.message);
   });
   await AndroidAlarmManager.periodic(
-    const Duration(hours: 1),
+    const Duration(minutes: 15),
     66,
     watercheckState,
     exact: true,
@@ -123,7 +116,7 @@ void main() async {
   ).catchError((err) {
     print(err.message);
   });
- 
+
   runApp(ChangeNotifierProvider<DarkThemeProvider>(
     create: (_) => new DarkThemeProvider(),
     child: App(),
