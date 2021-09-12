@@ -16,37 +16,28 @@ medSchema(medicineName, medicineType, medicineTakes, medicineAmount) => {
       'medicineAmount': medicineAmount,
     };
 
-restTakesState() async {
-  await getdaymeds(DateTime.now());
-}
-
 checkTakeState() async {
-  bool update = false;
-  final meds = await UserController.getProp('medicine');
-  final takes = await getdaymeds(DateTime.now());
-  if (takes.length > 0) {
-    Map<String, dynamic> result = new Map();
-    int i = 0;
-    takes.forEach((key, value) {
-      result[key] = new Map();
-      value.forEach((key1, value1) async {
-        result[key][key1] = new Map();
-        result[key][key1]['time'] = value1['time'];
-        result[key][key1]['taken'] = value1['taken'];
+  if (DateTime.now().add(Duration(hours: -1)).day != DateTime.now().day) {
+    bool update = false;
+    final takes = await getdaymeds(DateTime.now().add(Duration(hours: -1)));
+    if (takes.length > 0) {
+      Map<String, dynamic> result = new Map();
+      takes.forEach((key, value) {
+        result[key] = new Map();
+        value.forEach((key1, value1) async {
+          result[key][key1] = new Map();
+          result[key][key1]['time'] = value1['time'];
+          result[key][key1]['taken'] = value1['taken'];
 
-        if (compareTime(value1['time']) && value1['taken'] == '0') {
-          update = true;
-          result[key][key1]['taken'] = '2';
-          print(meds[i.toString()]['medicineName'] +
-              ' take at ' +
-              value1['time'] +
-              ' Is running late');
-        }
+          if (compareTime(value1['time']) && value1['taken'] == '0') {
+            update = true;
+            result[key][key1]['taken'] = '2';
+          }
+        });
       });
-      i++;
-    });
-    if (update) {
-      await UserController.createProp('medicineTakes', result);
+      if (update) {
+        await UserController.createProp('medicineTakes', result);
+      }
     }
   }
 }
