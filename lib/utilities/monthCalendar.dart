@@ -41,7 +41,15 @@ Widget weekCalander(context, i, data) {
                     color: Colors.brown,
                   ),
                   width: MediaQuery.of(context).size.width / 7.2,
-                  height: MediaQuery.of(context).size.height / 25,
+                  height: MediaQuery.of(context).size.height / 20,
+                  margin: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width / 600,
+                    vertical: MediaQuery.of(context).size.width / 600,
+                  ),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width / 300,
+                    vertical: MediaQuery.of(context).size.width / 600,
+                  ),
                   child: Center(
                     child: Text(
                       daysOfWeek[index],
@@ -77,15 +85,29 @@ Widget dayCalander(context, int index, int weekid, data) {
       .substring(0, today.toString().indexOf(' '))];
   if (daybowlData != null) {
     imgId = daybowlData.entries.first.value['type'];
-    print(daybowlData.entries.first.value['type']);
   }
+  // if (month == today.month && day == today.day) {
+  //   color = Colors.orange.shade300;
+  // }
   return Container(
     decoration: BoxDecoration(
-      border: Border.all(),
+      // borderRadius: BorderRadius.circular(10),
+      border: Border.all(
+          color: month == today.month && day == today.day
+              ? Colors.white
+              : Colors.black),
       color: color,
     ),
     width: MediaQuery.of(context).size.width / 7.2,
     height: MediaQuery.of(context).size.height / 20,
+    margin: EdgeInsets.symmetric(
+      horizontal: MediaQuery.of(context).size.width / 600,
+      vertical: MediaQuery.of(context).size.width / 600,
+    ),
+    padding: EdgeInsets.symmetric(
+      horizontal: MediaQuery.of(context).size.width / 300,
+      vertical: MediaQuery.of(context).size.width / 600,
+    ),
     child: Center(
         child: Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -177,7 +199,7 @@ Widget dayMeds(context, allData, today, month, day) {
 }
 
 Widget dayIndicator(context, allData, daybowlData, today, month, day) {
-  if (month < today.month || (month == today.month && today.day > day)) {
+  if (month < today.month || (month == today.month && today.day >= day)) {
     final waterData = allData.waterDrank[DateTime(today.year, month, day)
         .toString()
         .substring(0, today.toString().indexOf(' '))];
