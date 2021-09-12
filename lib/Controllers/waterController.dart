@@ -7,12 +7,14 @@ Future<Map<String, dynamic>> waterTodayProps() async {
       .toString()
       .substring(0, DateTime.now().toString().indexOf(' '));
   if (data[today] == null) {
-    data[today] = {
+    await UserController.createProp('waterDrank.$today', {
       'waterTarget': waterAmount,
-      'wtaerDrunk': '0',
+      'waterDrunk': '0',
+    });
+    return {
+      'waterTarget': waterAmount,
+      'waterDrunk': '0',
     };
-    await UserController.createProp('waterDrank.$today', data[today]);
-    return data[today];
   }
   return data[today];
 }
