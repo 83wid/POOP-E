@@ -168,48 +168,22 @@ class _MyHomePageState extends State<MyHomePage> {
                                                       color: Colors.black))
                                             ]));
                                       }
-                                      // print(bowl[date]);
-                                      // if (count != 0) {
-                                      // final int days = int.parse(
-                                      //     date.substring(
-                                      //         date.length - 2, date.length));
-                                      // final per = days / count;
                                       String text = '';
-                                      // if (per == 1) {
-                                      //   text = 'Once per day';
-                                      //   color = Colors.green;
-                                      //   image = imgs[0];
-                                      // }
-                                      // if (per > 1) {
-                                      //   text = 'Once per ' +
-                                      //       per.toStringAsFixed(1) +
-                                      //       ' days';
-                                      //   color = per > 2
-                                      //       ? Colors.red
-                                      //       : Colors.yellow;
-                                      //   image = per > 2 ? imgs[2] : imgs[1];
-                                      // } else {
-                                      //   text = (1 / per).toStringAsFixed(1) +
-                                      //       ' times per day';
-                                      //   color = Colors.green;
-                                      //   image = imgs[0];
-                                      // }
                                       final poopDays =
                                           timeSinceLatepooped(bowl);
-                                      // if (poopDays > 2) {
-                                      text = poopDays > 0 ?
-                                          "$poopDays days since you last Pooped" : "Yaay!! You've pooped just Today";
+                                      text = poopDays > 0
+                                          ? "$poopDays days since you last Pooped"
+                                          : "Yaay!! You've pooped just Today";
+                                      color = poopDays >= 2
+                                          ? Colors.yellow
+                                          : Colors.green;
                                       color =
-                                          poopDays >= 2 ? Colors.yellow : Colors.green;
-                                      color = poopDays >= 3
-                                          ? Colors.orange
-                                          : color;
+                                          poopDays >= 3 ? Colors.orange : color;
                                       color =
                                           poopDays >= 4 ? Colors.red : color;
                                       image = poopDays >= 2 ? imgs[1] : image;
                                       image = poopDays >= 3 ? imgs[3] : image;
                                       image = poopDays > 4 ? imgs[2] : image;
-                                      // }
                                       return Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
@@ -341,9 +315,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                       : ListView.builder(
                                           itemCount: bowl.length,
                                           itemBuilder: (context, index) {
-                                            final Map<String, dynamic> item =
-                                                bowl[index];
-                                            return bowlEntry(context, item);
+                                            return bowlEntry(
+                                                context,
+                                                bowl[bowl.length - index - 1]
+                                                    .value);
                                           },
                                         ),
                                 ),
@@ -383,11 +358,10 @@ Future<void> signOut({required BuildContext context}) async {
 int timeSinceLatepooped(Map data) {
   if (data.length > 0) {
     final listdayspermonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-    final date = DateTime.parse(data.entries.last.value['time']);
+    final date = DateTime.parse(data.entries.last.value.value['time']);
     if (date.month == DateTime.now().month)
       return DateTime.now().day - date.day;
-    else
-      return listdayspermonth[date.month] - date.day + DateTime.now().day;
+    return listdayspermonth[date.month] - date.day + DateTime.now().day;
   }
   return 0;
 }
