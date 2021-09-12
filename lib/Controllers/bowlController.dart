@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:poopingapp/utilities/compare.dart';
 
 List<String> type = [
   'Separated hard lumps',
@@ -127,7 +128,11 @@ Map<int, dynamic> bowlToMap(Map<String, dynamic> bowl) {
       data[i++] = value;
     });
   });
-  return data;
+  final sortedKeys = data.entries.toList()
+    ..sort((a, b) {
+      return compare(a.value['time'], b.value['time']);
+    });
+  return sortedKeys.asMap();
 }
 
 Widget bowlEntry(BuildContext context, item) {
@@ -181,5 +186,4 @@ Widget bowlEntry(BuildContext context, item) {
       ],
     ),
   );
-  
 }
