@@ -72,7 +72,7 @@ bool checkMedStatus(data) {
     while (++i < data.length) {
       int j = -1;
       while (++j < data[i.toString()].length)
-        if (data[i.toString()][j.toString()]['taken'] == '0') return true;
+        if (data[i.toString()][j.toString()]['taken'] != '1') return true;
     }
     return false;
   }
