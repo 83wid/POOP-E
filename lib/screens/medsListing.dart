@@ -61,7 +61,10 @@ Widget header(context, data, index) {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           index != 0 ? Icon(Icons.arrow_back_ios) : Text(''),
-          Text(days[index], style: TextStyle(fontSize: 25, fontFamily: 'Bebas_Neue'),),
+          Text(
+            days[index],
+            style: TextStyle(fontSize: 25, fontFamily: 'Bebas_Neue'),
+          ),
           index != 2 ? Icon(Icons.arrow_forward_ios) : Text(''),
         ],
       ),
@@ -201,8 +204,17 @@ Widget medicineInfo(context, data, id) {
                                                                 ['taken'] = '2';
                                                             await UserController
                                                                 .createProp(
-                                                                    'medicineTakes',
+                                                                    'medicineTakesEntries.$today',
                                                                     takes);
+                                                            Navigator.pop(
+                                                                context);
+                                                            MaterialPageRoute(
+                                                                builder: (context) =>
+                                                                    MedsListScreen(
+                                                                        data:
+                                                                            data,
+                                                                        medId:
+                                                                            id));
                                                           }
                                                         },
                                                         child: Container(
@@ -233,7 +245,7 @@ Widget medicineInfo(context, data, id) {
                                                               ['taken'] = '1';
                                                           await UserController
                                                               .createProp(
-                                                                  'medicineTakes',
+                                                                  'medicineTakesEntries.$today',
                                                                   takes);
                                                           Navigator.pop(
                                                               context);
