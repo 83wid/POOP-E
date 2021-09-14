@@ -17,12 +17,12 @@ import 'package:android_alarm_manager/android_alarm_manager.dart';
 
 String name = 'portName';
 
-void takeState() async {
-  final int isolateId = Isolate.current.hashCode;
-  await Firebase.initializeApp();
-  checkTakeState();
-  print({'id' : 'meds update', 'isolateId': isolateId});
-}
+// void takeState() async {
+//   final int isolateId = Isolate.current.hashCode;
+//   await Firebase.initializeApp();
+//   checkTakeState();
+//   print({'id' : 'meds update', 'isolateId': isolateId});
+// }
 
 void watercheckState() async {
   final int isolateId = Isolate.current.hashCode;
@@ -96,16 +96,16 @@ void main() async {
     rescheduleOnReboot: true,
     wakeup: true,
   );
-  await AndroidAlarmManager.periodic(
-    const Duration(minutes: 1),
-    1,
-    takeState,
-    exact: true,
-    rescheduleOnReboot: true,
-    wakeup: true,
-  ).catchError((err) {
-    print(err.message);
-  });
+  // await AndroidAlarmManager.periodic(
+  //   const Duration(minutes: 1),
+  //   1,
+  //   takeState,
+  //   exact: true,
+  //   rescheduleOnReboot: true,
+  //   wakeup: true,
+  // ).catchError((err) {
+  //   print(err.message);
+  // });
   await AndroidAlarmManager.periodic(
     const Duration(minutes: 15),
     66,
