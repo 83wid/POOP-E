@@ -238,7 +238,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: GestureDetector(
                           onDoubleTap: () => Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
-                                return WaterUpdateScreen();
+                                return WaterUpdateListScreen();
                               })),
                           child: WaterChart()),
                     ),

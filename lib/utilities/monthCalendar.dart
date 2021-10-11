@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:poopingapp/Controllers/bowlController.dart';
 import 'package:poopingapp/Controllers/medsController.dart';
 import 'package:poopingapp/Controllers/userController.dart';
 import 'package:poopingapp/utilities/styles.dart';
@@ -89,55 +90,132 @@ Widget dayCalander(context, int index, int weekid, data) {
   // if (month == today.month && day == today.day) {
   //   color = Colors.orange.shade300;
   // }
-  return Container(
-    decoration: BoxDecoration(
-      // borderRadius: BorderRadius.circular(10),
-      border: Border.all(
-          color: month == today.month && day == today.day
-              ? Colors.white
-              : Colors.black),
-      color: color,
-    ),
-    width: MediaQuery.of(context).size.width / 7.2,
-    height: MediaQuery.of(context).size.height / 20,
-    margin: EdgeInsets.symmetric(
-      horizontal: MediaQuery.of(context).size.width / 600,
-      vertical: MediaQuery.of(context).size.width / 600,
-    ),
-    padding: EdgeInsets.symmetric(
-      horizontal: MediaQuery.of(context).size.width / 300,
-      vertical: MediaQuery.of(context).size.width / 600,
-    ),
-    child: Center(
-        child: Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Row(children: [
-          Text(day.toString(),
-              style: TextStyle(
-                color: month == today.month ? Colors.white : Colors.grey,
-              )),
-        ]),
-        Container(
-          padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width / 100),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              bowlData(context, daybowlData, imgId),
-              moreBowlToday(context, daybowlData),
-              waterData(context, data, today, month, day),
-              dayMeds(context, data, today, month, day)
-            ],
+  return GestureDetector(
+    onTap: () => showDialog(
+        context: context,
+        builder: (_) => Center(
+                child: Container(
+              height: MediaQuery.of(context).size.height / 5,
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      daybowlData != null
+                          ? bowlEntry(context, daybowlData.entries.first.value)
+                          : SizedBox(
+                              height: 0,
+                              width: 0,
+                            ),
+                      TextButton(
+                        onPressed: () => null,
+                        child: Text('edit'),
+                      ),
+                    ],
+                  ),
+                  moreBowlToday(
+                    context,
+                    daybowlData,
+                    10,
+                    10,
+                  ),
+                  waterData(
+                    context,
+                    data,
+                    today,
+                    month,
+                    day,
+                    10,
+                    5,
+                  ),
+                  dayMeds(
+                    context,
+                    data,
+                    today,
+                    month,
+                    day,
+                    10,
+                    35,
+                  )
+                ],
+              ),
+            ))),
+    child: Container(
+      decoration: BoxDecoration(
+        // borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+            color: month == today.month && day == today.day
+                ? Colors.white
+                : Colors.black),
+        color: color,
+      ),
+      width: MediaQuery.of(context).size.width / 7.2,
+      height: MediaQuery.of(context).size.height / 20,
+      margin: EdgeInsets.symmetric(
+        horizontal: MediaQuery.of(context).size.width / 600,
+        vertical: MediaQuery.of(context).size.width / 600,
+      ),
+      padding: EdgeInsets.symmetric(
+        horizontal: MediaQuery.of(context).size.width / 300,
+        vertical: MediaQuery.of(context).size.width / 600,
+      ),
+      child: Center(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Row(children: [
+            Text(day.toString(),
+                style: TextStyle(
+                  color: month == today.month ? Colors.white : Colors.grey,
+                )),
+          ]),
+          Container(
+            padding: EdgeInsets.symmetric(
+                horizontal: MediaQuery.of(context).size.width / 100),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                bowlData(
+                  context,
+                  daybowlData,
+                  imgId,
+                  25,
+                  30,
+                ),
+                moreBowlToday(
+                  context,
+                  daybowlData,
+                  35,
+                  35,
+                ),
+                waterData(
+                  context,
+                  data,
+                  today,
+                  month,
+                  day,
+                  35,
+                  30,
+                ),
+                dayMeds(
+                  context,
+                  data,
+                  today,
+                  month,
+                  day,
+                  35,
+                  30,
+                )
+              ],
+            ),
           ),
-        ),
-        dayIndicator(context, data, daybowlData, today, month, day)
-      ],
-    )),
+          dayIndicator(context, data, daybowlData, today, month, day)
+        ],
+      )),
+    ),
   );
 }
 
-Widget waterData(context, allData, today, month, day) {
+Widget waterData(context, allData, today, month, day, width, height) {
   final data = allData.waterDrank[DateTime(today.year, month, day)
       .toString()
       .substring(0, today.toString().indexOf(' '))];
@@ -150,27 +228,28 @@ Widget waterData(context, allData, today, month, day) {
         ? 'assets/images/waterTargetMet.png'
         : 'assets/images/waterTargetNmet.png';
     return Image.asset(image,
-        width: MediaQuery.of(context).size.width / 35, fit: BoxFit.contain);
+        width: MediaQuery.of(context).size.width / width, fit: BoxFit.contain);
   }
   return SizedBox(height: 0, width: 0);
 }
 
-Widget bowlData(context, daybowlData, imgId) {
+Widget bowlData(context, daybowlData, imgId, width, height) {
   if (daybowlData != null) {
     return Container(
       // color: Colors.brown[100],
       child: Image.asset('assets/images/type${int.parse(imgId) + 1}.png',
-          width: MediaQuery.of(context).size.width / 25, fit: BoxFit.contain),
+          width: MediaQuery.of(context).size.width / width,
+          fit: BoxFit.contain),
     );
   }
   return SizedBox(height: 0, width: 0);
 }
 
-Widget moreBowlToday(context, daybowlData) {
+Widget moreBowlToday(context, daybowlData, width, height) {
   if (daybowlData != null && daybowlData.length > 1) {
     return Container(
-        width: MediaQuery.of(context).size.width / 35,
-        height: MediaQuery.of(context).size.width / 35,
+        width: MediaQuery.of(context).size.width / width,
+        height: MediaQuery.of(context).size.width / height,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(100),
           color: Colors.green,
@@ -182,7 +261,7 @@ Widget moreBowlToday(context, daybowlData) {
   return SizedBox(height: 0, width: 0);
 }
 
-Widget dayMeds(context, allData, today, month, day) {
+Widget dayMeds(context, allData, today, month, day, width, height) {
   if (month < today.month || (month == today.month && today.day > day)) {
     final medsData = allData.medicineTakesEntries[
         DateTime(today.year, month, day)
@@ -193,7 +272,8 @@ Widget dayMeds(context, allData, today, month, day) {
         : 'assets/images/medsTaken.png';
     if (medsData != null)
       return Image.asset(image,
-          width: MediaQuery.of(context).size.width / 35, fit: BoxFit.contain);
+          width: MediaQuery.of(context).size.width / width,
+          fit: BoxFit.contain);
   }
   return SizedBox(height: 0, width: 0);
 }

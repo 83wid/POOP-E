@@ -187,3 +187,9 @@ Widget bowlEntry(BuildContext context, item) {
     ),
   );
 }
+
+modifyintry(entry) async{
+
+  final day = entry['time'].substring(0, entry['time'].indexOf(' '));
+  final hour = entry['time'].substring(entry['time'].indexOf(' ') + 1, entry['time'].indexOf(':'));
+}

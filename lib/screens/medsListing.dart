@@ -4,6 +4,7 @@ import 'package:poopingapp/Controllers/userController.dart';
 import 'package:poopingapp/screens/Setup_screens/setMedReminder.dart';
 import 'package:poopingapp/screens/homeScreen.dart';
 import 'package:poopingapp/utilities/charts.dart';
+import 'package:poopingapp/utilities/daynav.dart';
 import 'package:poopingapp/utilities/styles.dart';
 
 final prop = [
@@ -52,22 +53,11 @@ class _MedsListScreenState extends State<MedsListScreen> {
 }
 
 Widget header(context, data, index) {
-  final days = ['Today', 'Yesterday', 'The day before'];
   return Column(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       SizedBox(height: MediaQuery.of(context).size.height / 10),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          index != 0 ? Icon(Icons.arrow_back_ios) : Text(''),
-          Text(
-            days[index],
-            style: TextStyle(fontSize: 25, fontFamily: 'Bebas_Neue'),
-          ),
-          index != 2 ? Icon(Icons.arrow_forward_ios) : Text(''),
-        ],
-      ),
+      navbar(index),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -150,6 +140,23 @@ Widget medicineInfo(context, data, id) {
                       .add(Duration(hours: -24 * index))
                       .toString()
                       .substring(0, DateTime.now().toString().indexOf(' '));
+                  if (snapshot.data!.medicineTakesEntries[today] == null)
+                    return Container(
+                        child: Center(
+                      child: Column(
+                        children: [
+                          SizedBox(
+                              height: MediaQuery.of(context).size.height / 10),
+                          navbar(index),
+                          Expanded(
+                            child: Center(
+                              child: Text('No data Found',
+                                  style: Styles.defaultTextStyleWhite),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ));
                   final Map<String, dynamic> takes =
                       snapshot.data!.medicineTakesEntries[today];
                   return Column(

@@ -21,7 +21,8 @@ Future<Map<String, dynamic>> waterTodayProps() async {
 
 Future<Map<String, dynamic>> waterPropsof(date) async {
   final data = await UserController.getProp('waterDrank');
-  return data[date];
+  return data[date.toString()
+      .substring(0, DateTime.now().toString().indexOf(' '))];
 }
 
 Future<Map<String, dynamic>> waterAllProps() async {
